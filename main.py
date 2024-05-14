@@ -1,12 +1,13 @@
 import asyncio
 from src.flappy import Flappy
 
-from speech import speech_recognition
+from speech import speech_recognition,whether_speech
 import threading
 
-# def run_speech_identify():
-#     while True:
-#         speech_recognition(2)
+def run_speech_identify():
+     print("在运行语音识别")
+     while not whether_speech:
+         speech_recognition(5)
 
 async def main():
     flappy_instance = Flappy()
@@ -14,11 +15,11 @@ async def main():
 
 if __name__ == "__main__":
     # 创建并启动一个线程来运行speech_identify（注意：调用函数而不是函数返回值）
-    # thread1 = threading.Thread(target=run_speech_identify)
-    # thread1.start()
+     thread1 = threading.Thread(target=run_speech_identify)
+     thread1.start()
 
     # 在主进程中运行asyncio事件循环
-    asyncio.run(main())
+     asyncio.run(main())
 
     # 如果你希望主线程等待 speech_identify 线程完成再退出程序，
     # 可以添加以下代码。但由于 asyncio.run(main()) 会阻塞主线程，

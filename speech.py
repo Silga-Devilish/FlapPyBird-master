@@ -7,6 +7,12 @@ API_KEY = "1GRXRCxc9SnEvy0m7WWuxG6F"
 SECRET_KEY = "tggblfIeFzFQ3G5CRqL87ztWnRYbnIme"
 client = AipSpeech(APP_ID,API_KEY,SECRET_KEY)
 
+whether_speech=False
+def check_speech():
+    return whether_speech
+
+
+
 def speech_recognition(sec):
     #创建音频对象
     p=pyaudio.PyAudio()
@@ -24,10 +30,24 @@ def speech_recognition(sec):
         wf.writeframes(data)
     data = open('test3.wav', 'rb').read()
     result = client.asr(open('test3.wav', 'rb').read(), 'wav', 16000, {'dev_pid': 1537})
-    print('录音结束')
+    print("识别结束")
+    recognized_text = ""  # 初始化 recognized_text，默认为空字符串
+    # 添加错误处理和指令检测逻辑
+    if 'result' in result and result['result']:  # 确保'result'存在且不为空
+        recognized_text = result['result'][0]
+        trigger_phrases = ["开始游戏。", "游戏开始。", "开始。"]
+
+        if recognized_text in trigger_phrases:
+            print("检测到开始指令！")
+            whether_speech = True  # 指令匹配，设置whether_speech为True
+        else:
+            print("未检测到特定指令。")
+    else:
+        print("语音识别返回结果中没有找到'result'或结果为空。")
+
     stream.stop_stream()
     stream.close()
     p.terminate()
     wf.close()
-    print(result['result'][0])
-    return result['result'][0]
+
+    return recognized_text
