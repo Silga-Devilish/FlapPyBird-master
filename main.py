@@ -6,8 +6,8 @@ import threading
 
 def run_speech_identify():
      print("在运行语音识别")
-     while not whether_speech_event.is_set():
-         speech_recognition(5)
+     while True:
+         speech_recognition(3)
 
 async def main():
     flappy_instance = Flappy()

@@ -9,6 +9,7 @@ SECRET_KEY = "wqKJpfpb2MCisTD9KeTVVLQvltG9WN6g"
 client = AipSpeech(APP_ID,API_KEY,SECRET_KEY)
 
 whether_speech_event = threading.Event()  # 在全局作用域定义Event对象
+speech_exit =threading.Event()
 
 def reset_speech_event():
     """
@@ -44,11 +45,14 @@ def speech_recognition(sec):
     # 添加错误处理和指令检测逻辑
     if 'result' in result and result['result']:  # 确保'result'存在且不为空
         recognized_text = result['result'][0]
-        trigger_phrases = ["开始游戏。", "游戏开始。", "开始。"]
-
-        if recognized_text in trigger_phrases:
+        trigger_phrases_start = ["开始游戏。", "游戏开始。", "开始。"]
+        trigger_phrases_exit = ["退出游戏。", "游戏退出。", "退出。", "游戏关闭。", "关闭游戏。"]
+        if recognized_text in trigger_phrases_start:
                 print("检测到开始指令！")
                 whether_speech_event.set()
+        elif recognized_text in trigger_phrases_exit:
+                print("检测到退出指令！")
+                speech_exit.set()
         else:
                 print("未检测到特定指令。")
     else:
@@ -61,5 +65,3 @@ def speech_recognition(sec):
     wf.close()
     print(result['result'][0])
     return result['result'][0]
-
-print(speech_recognition(5))

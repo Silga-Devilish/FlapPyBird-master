@@ -17,7 +17,7 @@ Entity,
 WelcomeMessage,
 )
 from .utils import GameConfig, Images, Sounds, Window
-from speech import whether_speech_event
+from speech import whether_speech_event,speech_exit
 
 class Flappy:
     def __init__(self):
@@ -74,7 +74,7 @@ class Flappy:
     def check_quit_event(self, event):
         if event.type == QUIT or (
             event.type == KEYDOWN and event.key == K_ESCAPE
-        ):
+        ) or speech_exit.is_set():
             pygame.quit()
             sys.exit()
 
