@@ -1,12 +1,12 @@
 import asyncio
 from src.flappy import Flappy
 
-from speech import speech_recognition,whether_speech
+from speech import speech_recognition,whether_speech_event
 import threading
 
 def run_speech_identify():
      print("在运行语音识别")
-     while not whether_speech:
+     while not whether_speech_event.is_set():
          speech_recognition(5)
 
 async def main():

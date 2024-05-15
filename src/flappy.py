@@ -17,7 +17,7 @@ Entity,
 WelcomeMessage,
 )
 from .utils import GameConfig, Images, Sounds, Window
-from speech import check_speech, whether_speech
+from speech import whether_speech_event
 
 class Flappy:
     def __init__(self):
@@ -44,8 +44,8 @@ class Flappy:
             self.game_over_message = GameOver(self.config)
             self.pipes = Pipes(self.config)
             self.score = Score(self.config)
-            global whether_speech
-            whether_speech = False
+
+
             await self.splash()
             await self.play()
             await self.game_over()
@@ -58,9 +58,8 @@ class Flappy:
         while True:
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event) or self.is_speech_event():
-                    global whether_speech
-                    whether_speech = True
+                if self.is_tap_event(event) or whether_speech_event.is_set():
+                    whether_speech_event.set()
                     return
 
             self.background.tick()
@@ -87,8 +86,6 @@ class Flappy:
         screen_tap = event.type == pygame.FINGERDOWN
         return m_left or space_or_up or screen_tap
 
-    def is_speech_event(self):
-        return check_speech()
 
     async def play(self):
         self.score.reset()
