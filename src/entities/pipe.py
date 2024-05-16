@@ -63,6 +63,7 @@ class Pipes(Entity):
     def stop(self) -> None:
         for pipe in self.upper + self.lower:
             pipe.vel_x = 0
+            pipe.vel_x_base = 0
 
     def can_spawn_pipes(self) -> bool:
         last = self.upper[-1]
