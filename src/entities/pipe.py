@@ -3,17 +3,40 @@ from typing import List
 
 from ..utils import GameConfig
 from .entity import Entity
-
+from  speech import speed_up_event,speed_down_event
 
 class Pipe(Entity):
+    # 定义一个类属性作为基础速度
+    vel_x_base = -10
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.vel_x = -5
+        # 每个实例使用类属性初始化速度
+        self.vel_x = self.vel_x_base
 
     def draw(self) -> None:
         self.x += self.vel_x
+
+        if speed_up_event.is_set():
+            self.speed_up()
+            speed_up_event.clear()
+        if speed_down_event.is_set():
+            self.speed_down()
+            speed_down_event.clear()
+        self.vel_x = self.vel_x_base
         super().draw()
 
+    def speed_up(self) -> None:
+        # 改变速度时，改变类属性，影响所有实例
+        Pipe.vel_x_base -= 5
+        # 确保当前实例速度也更新
+        self.vel_x = Pipe.vel_x_base
+
+    def speed_down(self) -> None:
+        # 改变速度时，改变类属性，影响所有实例
+        Pipe.vel_x_base += 5
+        # 确保当前实例速度也更新
+        self.vel_x = Pipe.vel_x_base
 
 class Pipes(Entity):
     upper: List[Pipe]

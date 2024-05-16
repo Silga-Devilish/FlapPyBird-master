@@ -9,7 +9,9 @@ SECRET_KEY = "wqKJpfpb2MCisTD9KeTVVLQvltG9WN6g"
 client = AipSpeech(APP_ID,API_KEY,SECRET_KEY)
 
 whether_speech_event = threading.Event()  # 在全局作用域定义Event对象
-speech_exit =threading.Event()
+speech_exit = threading.Event()
+speed_up_event = threading.Event()
+speed_down_event = threading.Event()
 
 def reset_speech_event():
     """

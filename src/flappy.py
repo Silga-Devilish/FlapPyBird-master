@@ -3,7 +3,6 @@ import sys
 from face import face_identify
 import pygame
 from pygame.locals import K_ESCAPE, K_SPACE, K_UP, KEYDOWN, QUIT
-
 from .entities import (
 PlayerMode,
 GameOver,
@@ -17,7 +16,7 @@ Entity,
 WelcomeMessage,
 )
 from .utils import GameConfig, Images, Sounds, Window
-from speech import whether_speech_event,speech_exit
+from speech import whether_speech_event,speech_exit,speed_down_event,speed_up_event
 
 class Flappy:
     def __init__(self):
@@ -103,6 +102,8 @@ class Flappy:
                 self.check_quit_event(event)
                 if self.is_tap_event(event):
                     self.player.flap()
+                    speed_up_event.set()
+
 
             self.background.tick()
             self.floor.tick()
