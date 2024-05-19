@@ -57,7 +57,7 @@ class Flappy:
         while True:
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event) or whether_speech_event.is_set():
+                if whether_speech_event.is_set() or self.is_tap_event(event)  :
                     whether_speech_event.set()
                     return
 

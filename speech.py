@@ -49,12 +49,20 @@ def speech_recognition(sec):
         recognized_text = result['result'][0]
         trigger_phrases_start = ["开始游戏。", "游戏开始。", "开始。"]
         trigger_phrases_exit = ["退出游戏。", "游戏退出。", "退出。", "游戏关闭。", "关闭游戏。"]
+        trigger_phrases_speed_up = ["加速。","加快速度。","冲刺。","快点","快一点"]
+        trigger_phrases_speed_down = ["减速。","降低速度。","慢下来。"]
         if recognized_text in trigger_phrases_start:
                 print("检测到开始指令！")
                 whether_speech_event.set()
         elif recognized_text in trigger_phrases_exit:
                 print("检测到退出指令！")
                 speech_exit.set()
+        elif recognized_text in trigger_phrases_speed_up:
+            print("检测到加速指令！")
+            speed_up_event.set()
+        elif recognized_text in trigger_phrases_speed_down:
+            print("检测到减速指令！")
+            speed_down_event.set()
         else:
                 print("未检测到特定指令。")
     else:
