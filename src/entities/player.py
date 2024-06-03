@@ -5,10 +5,13 @@ from ..utils import GameConfig, clamp
 from .entity import Entity
 from .floor import Floor
 from .pipe import Pipe, Pipes
-from face import face_identify,process_frame
+from face import face_identify, process_frame
 import time
 import cv2
 import mediapipe as mp
+import numpy as np
+
+
 class PlayerMode(Enum):
     SHM = "SHM"
     NORMAL = "NORMAL"
@@ -34,12 +37,13 @@ class Player(Entity):
         cv2.resizeWindow('Camera Feed', 1920, 1080)
         self.mp_face_mech = mp.solutions.face_mesh
         self.model = self.mp_face_mech.FaceMesh(static_image_mode=False,
-                                      max_num_faces=2,
-                                      refine_landmarks=True,
-                                      )
+                                                max_num_faces=2,
+                                                refine_landmarks=True,
+                                                )
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.cap.open(0)
+
     def set_mode(self, mode: PlayerMode) -> None:
         self.mode = mode
         if mode == PlayerMode.NORMAL:
@@ -53,6 +57,7 @@ class Player(Entity):
             if self.crash_entity == "pipe":
                 self.config.sounds.die.play()
             self.reset_vals_crash()
+
     def reset_vals_normal(self) -> None:
         self.vel_y = -9  # player's velocity along Y axis
         self.max_vel_y = 10  # max vel along Y, max descend speed
@@ -66,11 +71,12 @@ class Player(Entity):
 
         self.flap_acc = -9  # players speed on flapping
         self.flapped = False  # True when player flaps
+
     def reset_vals_shm(self) -> None:
         self.vel_y = 4  # player's velocity along Y axis
         self.max_vel_y = 5  # max vel along Y, max descend speed
         self.min_vel_y = -5  # min vel along Y, max ascend speed
-        self.acc_y = 1 # players downward acceleration
+        self.acc_y = 1  # players downward acceleration
 
         self.rot = 0  # player's current rotation
         self.vel_rot = 0  # player's rotation speed
@@ -79,11 +85,13 @@ class Player(Entity):
 
         self.flap_acc = 0  # players speed on flapping
         self.flapped = False  # True when player flaps
+
     def reset_vals_crash(self) -> None:
         self.acc_y = 2
         self.vel_y = 7
         self.max_vel_y = 15
         self.vel_rot = -8
+
     def update_image(self):
         self.frame += 1
         if self.frame % 5 == 0:
@@ -91,13 +99,14 @@ class Player(Entity):
             self.image = self.config.images.player[self.img_idx]
             self.w = self.image.get_width()
             self.h = self.image.get_height()
+
     def tick_shm(self) -> None:
         if self.vel_y >= self.max_vel_y or self.vel_y <= self.min_vel_y:
             self.acc_y *= -1
         self.vel_y += self.acc_y
         self.y += self.vel_y
 
-    def process_frame(self,img):
+    def process_frame(self, img):
         yPos = 0
         xPos = 0
         avgx = 300
@@ -151,7 +160,7 @@ class Player(Entity):
         return img, avgx, avgy
 
     def tick_normal(self) -> None:
-        success,img=self.cap.read()
+        success, img = self.cap.read()
         self.y = self.process_frame(img)[2]
         self.rotate()
 
@@ -218,3 +227,14 @@ class Player(Entity):
                 return True
 
         return False
+
+    def get_frame(self):
+        ret, frame = self.cap.read()
+        if not ret:
+            print("Error: Failed to open camera.")
+            running = False
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = np.rot90(frame)
+        frame = pygame.surfarray.make_surface(frame)
+
+        return frame

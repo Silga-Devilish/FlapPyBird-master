@@ -1,6 +1,11 @@
 import time
 import cv2
 import mediapipe as mp
+
+import pygame
+import numpy as np
+
+
 def process_frame(img,self):
     yPos=0
     xPos=0
@@ -54,7 +59,7 @@ def process_frame(img,self):
 
     return img,avgx,avgy
 def face_identify():
-    cap = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(0)
     cv2.namedWindow('Camera Feed', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('Camera Feed', 1920, 1080)
     mp_face_mech = mp.solutions.face_mesh
@@ -64,9 +69,9 @@ def face_identify():
                                   )
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing_styles = mp.solutions.drawing_styles
-    cap.open(0)
-    while cap.isOpened():
-        success, frame = cap.read()
+    camera.open(0)
+    while camera.isOpened():
+        success, frame = camera.read()
         if not success:
             print('Error')
             break
@@ -77,5 +82,18 @@ def face_identify():
         if cv2.waitKey(1) in [ord('q'), 27]:
             break
 
-    cap.release()
+    camera.release()
     cv2.destroyAllWindows()
+
+def get_frame():
+    ret, frame = camera.read()
+    running = True
+
+    if not ret:
+        print("Error: Failed to open camera.")
+        running = False
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame = np.rot90(frame)
+    frame = pygame.surfarray.make_surface(frame)
+
+    return frame
