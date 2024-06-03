@@ -5,20 +5,21 @@ import pygame
 from pygame.locals import K_ESCAPE, K_SPACE, K_UP, KEYDOWN, QUIT
 
 from .entities import (
-PlayerMode,
-GameOver,
-Background,
-Floor,
-Pipe,
-Pipes,
-Player,
-Score,
-Entity,
-WelcomeMessage,
+    PlayerMode,
+    GameOver,
+    Background,
+    Floor,
+    Pipe,
+    Pipes,
+    Player,
+    Score,
+    Entity,
+    WelcomeMessage,
 )
 from .utils import GameConfig, Images, Sounds, Window
 
 import face
+
 
 class Flappy:
     def __init__(self):
@@ -71,7 +72,7 @@ class Flappy:
 
     def check_quit_event(self, event):
         if event.type == QUIT or (
-            event.type == KEYDOWN and event.key == K_ESCAPE
+                event.type == KEYDOWN and event.key == K_ESCAPE
         ):
             pygame.quit()
             sys.exit()
@@ -79,7 +80,7 @@ class Flappy:
     def is_tap_event(self, event):
         m_left, _, _ = pygame.mouse.get_pressed()
         space_or_up = event.type == KEYDOWN and (
-            event.key == K_SPACE or event.key == K_UP
+                event.key == K_SPACE or event.key == K_UP
         )
         screen_tap = event.type == pygame.FINGERDOWN
         return m_left or space_or_up or screen_tap
