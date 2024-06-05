@@ -24,7 +24,7 @@ class Flappy:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Flappy Bird")
-        window = Window(1600, 900)
+        window = Window(600, 800)
         screen = pygame.display.set_mode((window.width, window.height))
         images = Images()
         self.config = GameConfig(
@@ -101,7 +101,7 @@ class Flappy:
                 if self.is_tap_event(event):
                     self.player.flap()
 
-            # self.background.update_image(self.player.get_frame())
+            self.background.update_image(self.player.get_frame(),self.config.window.width,self.config.window.height)
             self.background.tick()
             self.floor.tick()
             self.pipes.tick()

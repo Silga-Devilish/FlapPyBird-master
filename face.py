@@ -84,16 +84,3 @@ def face_identify():
 
     camera.release()
     cv2.destroyAllWindows()
-
-def get_frame():
-    ret, frame = camera.read()
-    running = True
-
-    if not ret:
-        print("Error: Failed to open camera.")
-        running = False
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    frame = np.rot90(frame)
-    frame = pygame.surfarray.make_surface(frame)
-
-    return frame
