@@ -18,7 +18,6 @@ from .entities import (
 )
 from .utils import GameConfig, Images, Sounds, Window
 
-import face
 
 
 class Flappy:
@@ -102,7 +101,7 @@ class Flappy:
                 if self.is_tap_event(event):
                     self.player.flap()
 
-            self.background.update_image(self.player.get_frame())
+            # self.background.update_image(self.player.get_frame())
             self.background.tick()
             self.floor.tick()
             self.pipes.tick()
