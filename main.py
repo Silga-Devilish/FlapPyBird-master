@@ -4,13 +4,16 @@ from src.flappy import Flappy
 from speech import speech_recognition
 import threading
 
-# def run_speech_identify():
-#     while True:
-#         speech_recognition(2)
+
+def run_speech_identify():
+    while True:
+        speech_recognition(2)
+
 
 async def main():
     flappy_instance = Flappy()
     await flappy_instance.start()
+
 
 if __name__ == "__main__":
     # 创建并启动一个线程来运行speech_identify（注意：调用函数而不是函数返回值）

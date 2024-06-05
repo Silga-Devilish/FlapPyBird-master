@@ -1,6 +1,6 @@
 import asyncio
 import sys
-from face import face_identify
+
 import pygame
 from pygame.locals import K_ESCAPE, K_SPACE, K_UP, KEYDOWN, QUIT
 

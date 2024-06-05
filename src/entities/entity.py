@@ -45,7 +45,7 @@ class Entity:
             self.h = h
             self.image = pygame.transform.scale(image, (w, h))
 
-        self.hit_mask = get_hit_mask(self.image)
+        #self.hit_mask = get_hit_mask(self.image)
 
     @property
     def cx(self) -> float:

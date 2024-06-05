@@ -5,7 +5,7 @@ from ..utils import GameConfig, clamp
 from .entity import Entity
 from .floor import Floor
 from .pipe import Pipe, Pipes
-from face import face_identify, process_frame
+
 import time
 import cv2
 import mediapipe as mp
@@ -34,7 +34,7 @@ class Player(Entity):
         self.set_mode(PlayerMode.SHM)
         self.cap = cv2.VideoCapture(1)
         cv2.namedWindow('Camera Feed', cv2.WINDOW_NORMAL)
-        cv2.resizeWindow('Camera Feed', 1920, 1080)
+        cv2.resizeWindow('Camera Feed', 480, 540)
         self.mp_face_mech = mp.solutions.face_mesh
         self.model = self.mp_face_mech.FaceMesh(static_image_mode=False,
                                                 max_num_faces=2,
