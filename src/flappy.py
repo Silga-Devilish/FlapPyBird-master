@@ -1,6 +1,5 @@
 import asyncio
 import sys
-from face import face_identify
 import pygame
 from pygame.locals import K_ESCAPE, K_SPACE, K_UP, KEYDOWN, QUIT
 from .entities import (
@@ -22,7 +21,7 @@ class Flappy:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Flappy Bird")
-        window = Window(1600, 900)
+        window = Window(1920, 1080)
         screen = pygame.display.set_mode((window.width, window.height))
         images = Images()
         self.config = GameConfig(
@@ -104,7 +103,7 @@ class Flappy:
                     self.player.flap()
                     speed_up_event.set()
 
-
+            self.background.update_image(self.player.get_frame(), self.config.window.width, self.config.window.height)
             self.background.tick()
             self.floor.tick()
             self.pipes.tick()
@@ -129,6 +128,7 @@ class Flappy:
                     if self.player.y + self.player.h >= self.floor.y - 1:
                         return
 
+            self.background.update_image(self.player.get_frame(), self.config.window.width, self.config.window.height)
             self.background.tick()
             self.floor.tick()
             self.pipes.tick()

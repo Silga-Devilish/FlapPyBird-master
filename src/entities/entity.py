@@ -32,13 +32,22 @@ class Entity:
         self.__dict__.update(kwargs)
 
     def update_image(
-        self, image: pygame.Surface, w: int = None, h: int = None
+            self, image: pygame.Surface, w: int = None, h: int = None
     ) -> None:
         self.image = image
         self.hit_mask = get_hit_mask(image)
-        self.w = w or (image.get_width() if image else 0)
-        self.h = h or (image.get_height() if image else 0)
+        original_width = image.get_width()
+        original_height = image.get_height()
 
+        if w is None and h is None:
+            self.w = original_width
+            self.h = original_height
+        else:
+            self.w = w
+            self.h = h
+            self.image = pygame.transform.scale(image, (w, h))
+
+        #self.hit_mask = get_hit_mask(self.image) #如果用这句代码，则会很卡，貌似是赋予层遮罩，但是作为背景和这个项目不太需要这个东西节省空间
     @property
     def cx(self) -> float:
         return self.x + self.w / 2
